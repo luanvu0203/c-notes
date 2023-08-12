@@ -2,7 +2,11 @@
 
 ## Variables
 
-## Array, Decision, Looping
+## Array
+
+## Decision
+
+## Looping
 
 ## Function
 
@@ -12,9 +16,13 @@
 
 ## Memory Management
 
-## Pointer (Basic & Advance)
+## Pointer Basic 
 
-## Data Structure & Algorithms
+## Pointer Advance
+
+## Data Structure
+
+## Algorithms
 
 ## Optimization
 
