@@ -1,4 +1,4 @@
-# C Programming Language Summary
+# C Programming Language Course
 
 ## Variables
 
@@ -27,3 +27,7 @@
 ## Optimization
 
 ## Common Defects
+
+## Unit Testing
+
+## Git Version Control
