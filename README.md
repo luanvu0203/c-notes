@@ -32,33 +32,33 @@ Trong ngôn ngữ C, có 6 toán tử được gọi là toán tử bitwise (hay
 - **Toán tử >> (right shift)**: nhận hai số, dịch chuyển các bit của toán hạng đầu tiên sang phải và toán hạng thứ hai quyết định số vị trí cần dịch chuyển.
 - **Toán tử ~ (bitwise NOT)**: nhận một số và đảo ngược tất cả các bit của nó.
 ### Một số lưu ý khi sử dụng Bitwise Operations
-**1. Toán tử dịch trái và dịch phải không nên được sử dụng cho các số âm.** 
+#### **1. Toán tử dịch trái và dịch phải không nên được sử dụng cho các số âm.** 
 - Nếu toán hạng thứ hai (quyết định số lần dịch) là một số âm, kết quả sẽ là không xác định trong C.
   Ví dụ, kết quả của cả $1 << -1$ và $1 >> -1$ là không xác định. 
 - Nếu số được dịch chuyển nhiều hơn kích thước của số nguyên, kết quả cũng là không xác định.
   Ví dụ, $1 << 33$ là không xác định nếu số nguyên được lưu trữ bằng 32 bit. 
-**2. Phép OR bit của hai số chỉ là tổng của hai số đó nếu không có nhớ, khi có nhớ kết quả sẽ cộng thêm phép AND bit của chúng.**
+#### **2. Phép OR bit của hai số chỉ là tổng của hai số đó nếu không có nhớ, khi có nhớ kết quả sẽ cộng thêm phép AND bit của chúng.**
 - Ví dụ, giả sử chúng ta có $a = 5 (101)$ và $b = 2 (010)$, vì không có nhớ, tổng của chúng chỉ là $a | b$.
 - Bây giờ, nếu chúng ta thay đổi 'a' thành $6$, tức là $110$ nhị phân, tổng của chúng sẽ thay đổi thành $a | b + a \And b$ vì có nhớ.
-**3. Toán tử XOR bit là toán tử phổ biến nhất**
+#### **3. Toán tử XOR bit là toán tử phổ biến nhất**
 - Một ví dụ đơn giản có thể là "Cho một tập hợp các số trong đó tất cả các phần tử xuất hiện một số lần chẵn, ngoại trừ một số duy nhất xuất hiện một số lần lẻ, hãy tìm số xuất hiện lẻ". 
 - Vấn đề này có thể được giải quyết hiệu quả bằng cách thực hiện XOR trên tất cả các số.
 - Kết quả trả về sẽ là số duy nhất xuất hiện số lần lẻ vì phép XOR sẽ so sánh tất cả các số với nhau:
   + Kết quả là 0 với các số có số lần xuất hiện chẵn (do XOR các cặp số giống nhau).
   + Lúc này chỉ còn lại số có số lần xuất hiện lẻ.
-**4. Các toán tử Bitwise không nên được sử dụng thay thế cho các toán tử logic.**
+#### **4. Các toán tử Bitwise không nên được sử dụng thay thế cho các toán tử logic.**
 - Kết quả của các toán tử logic (&&, || và !) là 0 hoặc 1, nhưng các toán tử bitwise trả về một giá trị số nguyên.
 - Ngoài ra, các toán tử logic coi bất kỳ toán hạng khác không là 1.
-**5. Toán tử dịch trái (left-shift) và dịch phải (right-shift) tương đương với phép nhân và chia cho 2 tương ứng.**
+#### **5. Toán tử dịch trái (left-shift) và dịch phải (right-shift) tương đương với phép nhân và chia cho 2 tương ứng.**
 - Toán tử dịch trái (<<) dịch các bit của toán hạng trái sang trái theo số vị trí được xác định bởi toán hạng phải.
   Việc dịch trái tương đương với việc nhân toán hạng trái với $2^k$, trong đó k là số vị trí dịch.
 - Toán tử dịch phải (>>) dịch các bit của toán hạng trái sang phải theo số vị trí được xác định bởi toán hạng phải.
   Việc dịch phải tương đương với việc chia toán hạng trái cho $2^k$ và lấy phần nguyên.
-**6. Toán tử & (AND) có thể được sử dụng để kiểm tra nhanh xem một số có phải là số lẻ hay số chẵn.** 
+#### **6. Toán tử & (AND) có thể được sử dụng để kiểm tra nhanh xem một số có phải là số lẻ hay số chẵn.** 
 - Giá trị của biểu thức (x & 1) sẽ khác 0 chỉ khi x là số lẻ, ngược lại giá trị sẽ bằng 0. 
 - Điều này xuất phát từ tính chất của số nhị phân, trong đó bit cuối cùng của số lẻ là 1, trong khi bit cuối cùng của số chẵn là 0.
 - Vì vậy, khi thực hiện phép AND với 1, chúng ta chỉ quan tâm đến bit cuối cùng để xác định tính chẵn lẻ của số.
-**7. Toán tử ~ (NOT) cần được sử dụng cẩn thận.** 
+#### **7. Toán tử ~ (NOT) cần được sử dụng cẩn thận.** 
 - Kết quả của toán tử ~ trên một số nhỏ có thể là một số lớn nếu kết quả được lưu trữ trong một biến không dấu (unsigned). 
 - Và kết quả có thể là một số âm nếu kết quả được lưu trữ trong một biến có dấu (signed) (giả sử rằng các số âm được lưu trữ dưới dạng bù hai với bit trái nhất là bit dấu). Điều này liên quan đến cách biểu diễn số âm và số không dấu trong bộ nhớ máy tính.
 ### Set, Clear, Toggle, Read bit
