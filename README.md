@@ -114,6 +114,41 @@ int find(int *arr, int len, int k) {
 
 #### Binary Search
 
+Đối với danh sách kiểu mảng (**có thể truy cập phần tử bằng chỉ số**) đã được sắp xếp, việc tìm kiếm có thể được cải thiện đáng kể. Khi so sánh khóa $k$ với phần tử giữa danh sách, dựa vào kết quả so sánh mà **một nửa danh sách** có thể được loại bỏ do biết **chắc chắn** là các phần tử trong đó nhỏ hơn hoặc lớn hơn khóa tìm kiếm $k$.
+
+Ví dụ tìm kiếm với $k = 8$ trong dãy $[1, 2, 3, 4, 5, 6, 7, 8, 9]$ có phần tử chính giữa bằng $5$. Với $k=8>5$, ta sẽ chỉ cần tìm kiếm $k$ trong dãy $[6, 7, 8, 9]$ với phương pháp tương tự.
+
+```c
+// tìm kiếm trong danh sách tăng dần
+int binary_search(int *arr, int first, int last, int k) {
+    if (last >= first) {
+        int mid = (first+last)/2; // first + (last-first)/2
+        if (arr[mid] == k) {
+            return mid;
+        } else if (arr[mid] > k) {
+            // phần tử hiện tại lớn hơn khóa
+            // -> tìm kiếm ở nửa trước
+            binary_search(arr, first, mid-1, k);
+        } else {
+            // phần tử hiện tại nhỏ hơn khóa
+            // -> tìm kiếm ở nửa sau
+            binary_search(arr, mid+1, last, k);
+
+        }
+        
+    } else {
+        // last < first: danh sách rỗng - không tìm thấy
+        return -1;
+    }
+}
+```
+
+Độ phức tạp thời gian:
+
+- Trường hợp xấu nhất: $O(log(n))$
+- Trường hợp tốt nhất: $O(1)$
+- Trường hợp trung bình: $O(log(n))$
+
 ### Sorting algorithm
 
 #### Insertion Sort
