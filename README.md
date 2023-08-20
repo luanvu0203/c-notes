@@ -108,9 +108,9 @@ int find(int *arr, int len, int k) {
 
 Độ phức tạp thời gian:
 
-- Trường hợp xấu nhất: $O(n) = N$ khi phần tử tìm kiếm ở cuối cùng hoặc không có.
-- Trường hợp tốt nhất: $O(n) = 1$ khi phần tử tìm kiếm ở đầu danh sách.
-- Trung bình: $O(n) = \frac{N}{2} = N$ khi phần tử ở giữa danh sách.
+- Trường hợp xấu nhất: $O(n)$ khi phần tử tìm kiếm ở cuối cùng hoặc không có.
+- Trường hợp tốt nhất: $O(1)$ khi phần tử tìm kiếm ở đầu danh sách.
+- Trung bình: $O(\frac{n}{2}) = O(n)$ khi phần tử ở giữa danh sách.
 
 #### Binary Search
 
