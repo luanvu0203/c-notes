@@ -153,11 +153,115 @@ int binary_search(int *arr, int first, int last, int k) {
 
 #### Insertion Sort
 
+```c
+void insertion_sort(int *arr, int n) {
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        for (j = i - 1; j>=0; j--) {
+            if (arr[j] > key) {
+                arr[j+1] = arr[j];
+            } else {
+                break;
+            }
+        }
+        arr[j+1] = key;
+    }
+}
+```
+
 #### Bubble Sort
+
+```c
+void bubble_sort(int*arr, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if(arr[j] > arr[j+1]) {
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+}
+```
 
 #### Selection Sort
 
+```c
+void selection_sort(int *arr, int n) {
+    for (int i = 0; i < n-1; i++) {
+        int index_min = i;
+        int min = arr[i];
+        
+        // tìm chỉ số và giá trị phần tử nhỏ hơn arr[i]
+        for (int j = i+1; j < n; j++) {
+            if (arr[j] < min) {
+                index_min = j;
+                min = arr[j];
+            }
+        }
+        arr[index_min] = arr[i];
+        arr[i] = min;
+    }
+}
+```
+
 #### Quick Sort
+
+```c
+
+void swap(int* a, int* b)
+{
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+// Partition the array using the last element as the pivot
+int partition_sort(int arr[], int low, int high)
+{
+    // Choosing the pivot
+    int pivot = arr[high];
+ 
+    // Index of smaller element and indicates
+    // the right position of pivot found so far
+    int i = (low - 1);
+ 
+    for (int j = low; j <= high - 1; j++) {
+ 
+        // If current element is smaller than the pivot
+        if (arr[j] < pivot) {
+ 
+            // Increment index of smaller element
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+ 
+// The main function that implements QuickSort
+// arr[] --> Array to be sorted,
+// low --> Starting index,
+// high --> Ending index
+void quickSort(int arr[], int low, int high)
+{
+    if (low < high) {
+ 
+        // pi is partitioning index, arr[p]
+        // is now at right place
+        int pi = partition_sort(arr, low, high);
+ 
+        // Separately sort elements before
+        // partition and after partition
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+```
+
 
 ## Optimization
 
