@@ -24,9 +24,21 @@
 
 ## Algorithms
 
-### Section 1
+### Searching algorithm
 
-### Section 2
+#### Linear Search
+
+#### Binary Search
+
+### Sorting algorithm
+
+#### Insertion Sort
+
+#### Bubble Sort
+
+#### Selection Sort
+
+#### Quick Sort
 
 ## Optimization
 
