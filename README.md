@@ -87,7 +87,7 @@ Trong ngôn ngữ C, có 6 toán tử được gọi là toán tử bitwise (hay
   1 AND 1 = 1
   ```
   
-```
+```c
   #include <stdio.h>
 
   unsigned int setBit (unsigned int value, unsigned int k); 
@@ -149,7 +149,7 @@ Trong ngôn ngữ C, có 6 toán tử được gọi là toán tử bitwise (hay
   + Làm cho chương trình của chúng ta hiệu quả và linh hoạt hơn.
   + Dễ triển khai.
 - Bit field _**là các biến được định nghĩa với một độ rộng hoặc kích thước được xác định trước**_. Cú pháp khai báo của bit field như sau:
-```
+```c
   struct
   {
   data_type member_name : width_of_bit-field;
@@ -160,7 +160,7 @@ Trong ngôn ngữ C, có 6 toán tử được gọi là toán tử bitwise (hay
   **width_of_bit-field:** Số bit trong trường bit. Độ rộng phải nhỏ hơn hoặc bằng với độ rộng bit của kiểu dữ liệu được chỉ định.
 - **Một số ví dụ sử dụng Bit Field**
 **VD1. Cho đoạn chương trình sau, dự đoán kết quả của chương trình.**
-```
+```c
   #include <stdio.h>
   union test {
       // Bit-field member x with 3 bits
@@ -191,6 +191,7 @@ Trong ngôn ngữ C, có 6 toán tử được gọi là toán tử bitwise (hay
     + Khi khởi tạo union t, 1 vùng nhớ 4 bytes (32 bits) tương ứng với kích thước của trường có kích thước lớn nhất trong union (int).
     + Khi gán `t.z = 1;` giá trị 1 sẽ ghi vào vùng nhớ 32 bits này => giá trị của vùng nhớ (cả 32 bits) lúc này là 1.
     + Vậy giá trị `t.x`, `t.y` và `t.z` in ra sẽ là giá trị của vùng nhớ union t => Kết quả
+
 ## Memory Management
 
 ## Pointer Basic 
