@@ -86,7 +86,8 @@ Trong ngôn ngữ C, có 6 toán tử được gọi là toán tử bitwise (hay
   0 AND 1 = 0
   1 AND 1 = 1
   ```
-  ```
+  
+```
   #include <stdio.h>
 
   unsigned int setBit (unsigned int value, unsigned int k); 
