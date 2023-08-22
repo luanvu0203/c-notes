@@ -86,6 +86,57 @@ Trong ngôn ngữ C, có 6 toán tử được gọi là toán tử bitwise (hay
   0 AND 1 = 0
   1 AND 1 = 1
   ```
+  ```
+  #include <stdio.h>
+
+  unsigned int setBit (unsigned int value, unsigned int k); 
+  unsigned int clearBit (unsigned int value, unsigned int k);
+  unsigned int readBit (unsigned int value, unsigned int k); 
+  unsigned int toggleBit (unsigned int value, unsigned int k);
+  void printBinary (unsigned int num);
+  
+  int main(){
+      unsigned int value = 8; unsigned int k = 2;
+      unsigned int SetBit, ClearBit, ReadBit, ToggleBit;
+      SetBit = setBit(value, k - 1);
+      ClearBit = clearBit(value, k - 1);
+      ReadBit = readBit(value, k - 1);
+      ToggleBit = toggleBit(value, k - 1); 
+      printf("Value: %u, Order: %u\n", value, k);
+      printf("Value in binary:"); printBinary(value);
+      printf("SetBit: \t"); printBinary(SetBit);
+      printf("ClearBit: \t"); printBinary(ClearBit);
+      printf("ReadBit: \t"); printBinary (ReadBit); 
+      printf("ToggleBit: \t"); printBinary(ToggleBit);
+      return 0;
+  }
+  
+  unsigned int setBit (unsigned int value, unsigned int k)
+  {
+      return value |= (1<<k);
+  }
+  
+  unsigned int clearBit (unsigned int value, unsigned int k){
+      return value &= ~(1<<k);
+  }
+  
+  unsigned int readBit(unsigned int value, unsigned int k){ 
+      return (value & (1<<k)) >> k;
+  }
+  
+  unsigned int toggleBit (unsigned int value, unsigned int k){ 
+      return value ^= (1<<k);
+  };
+  
+  void printBinary(unsigned int num) {
+      int i;
+      int num_bits = (num == 0) ? 1 : log2(num) + 1;
+      for (i = num_bits - 1; i >= 0; i--) {
+          printf("%u", readBit(num, i));
+      }
+      printf("\n");
+  }
+```
 ### Bit mask
 
 ### Bit Field in C
