@@ -479,7 +479,251 @@ void quickSort(int arr[], int low, int high)
 ## Optimization
 
 ## Common Defects
+### 1. Trộn số nguyên có dấu và không dấu trong phép tính số học
+* Kiểu Signed Thông thường, việc trộn các unsigned số nguyên trong các phép tính số học thường không phải là một ý kiến hay. 
+#### Ví dụ: đầu ra của ví dụ sau là gì?
+```c
+#include <stdio.h>
+int main(void)
+{ 
+    unsigned int a = 1000;
+    signed int b = -1;
 
+    if (a > b) puts("a is more than b");
+    else puts("a is less or equal than b"); 
+
+    return 0;
+}
+```
+* Vì 1000 lớn hơn -1 nên bạn mong đợi kết quả đầu ra là a is more than b, tuy nhiên điều đó sẽ không xảy ra.
+* Các phép toán số học giữa các loại tích phân khác nhau được thực hiện trong một loại chung được xác định bởi cái gọi là chuyển đổi số học thông thường.
+* Trong trường hợp này, loại "phổ biến" là unsigned int. Điều này có nghĩa là int toán hạng b sẽ được chuyển đổi unsigned int trước khi so sánh.
+* Khi -1 được chuyển đổi thành unsigned int kết quả, giá trị tối đa có thể có unsigned int, lớn hơn 1000, nghĩa là giá trị đó a > bsai.
+
+### 2. Vượt qua ranh giới mảng
+*Mảng luôn bắt đầu bằng chỉ số 0 và kết thúc với độ dài mảng chỉ số trừ 1.
+** Sai:
+```c
+#include <stdio.h>
+int main()
+{
+    int x = 0;
+    int myArray[5] = { 1,2,3,4,5}; //Declaring 5 elements
+    for(x=1; x<=5; x++) //Looping from 1 till 5.
+       printf("%d\t”, myArray[x]);
+    printf("\n");
+    return 0;
+}
+//Output: 2 3 4 5 GarbageValue
+```
+** Chính xác:
+```c
+#include <stdio.h>
+int main()
+{
+    int x = 0;
+    int myArray[5] = { 1,2,3,4,5}; //Declaring 5 elements
+    for(x=0; x<5; x++) //Looping from 0 till 4.
+       printf("%d\t",myArray[x]);
+    printf("\n");
+    return 0;
+}
+//Output: 1 2 3 4 5
+```
+* Vì vậy, hãy biết độ dài mảng trước khi làm việc trên mảng, nếu không chúng ta có thể làm hỏng bộ đệm hoặc gây ra lỗi phân đoạn bằng cách truy cập vào vị trí bộ nhớ khác nhau.
+### 3. Thiếu điều kiện cơ bản trong hàm đệ quy
+Tính giai thừa của một số là một ví dụ cổ điển của hàm đệ quy.
+
+Thiếu điều kiện cơ bản:
+```c
+#include <stdio.h>
+int factorial(int n)
+{
+       return n * factorial(n - 1);
+}
+int main()
+{
+    printf("Factorial %d = %d\n", 3, factorial(3));
+    return 0;
+}
+//Typical output: Segmentation fault
+```
+* Vấn đề với hàm này là nó sẽ lặp vô hạn, gây ra lỗi phân đoạn - nó cần một điều kiện cơ bản để dừng đệ quy.
+* Điều kiện cơ bản được tuyên bố:
+```c
+#include <stdio.h>
+int factorial(int n)
+{
+    if (n == 1) // Base Condition, very crucial in designing the recursive functions.
+    {
+       return 1;
+    }
+    else
+    {
+       return n * factorial(n - 1);
+    }
+}
+int main()
+{
+    printf("Factorial %d = %d\n", 3, factorial(3));
+    return 0;
+}
+//Output :  Factorial 3 = 6
+```
+* Hàm này sẽ chấm dứt ngay khi nó đạt điều kiện n bằng 1 (với điều kiện giá trị ban đầu của n đủ nhỏ - giới hạn trên là 12 khi int là số lượng 32 bit).
+* Các quy tắc cần tuân thủ:
+* Khởi tạo thuật toán. Các chương trình đệ quy thường cần một giá trị gốc để bắt đầu. Điều này được thực hiện bằng cách sử dụng tham số được truyền cho hàm hoặc bằng cách cung cấp hàm cổng không đệ * quy nhưng thiết lập các giá trị gốc cho phép tính đệ quy.
+* Kiểm tra xem (các) giá trị hiện tại đang được xử lý có khớp với trường hợp cơ sở hay không. Nếu vậy, xử lý và trả về giá trị.
+* Xác định lại câu trả lời theo một hoặc nhiều vấn đề phụ nhỏ hơn hoặc đơn giản hơn.
+* Chạy thuật toán cho bài toán con.
+* Kết hợp các kết quả để xây dựng câu trả lời.
+* Trả về kết quả.
+### 4. Sử dụng hằng ký tự thay vì chuỗi ký tự và ngược lại
+Trong C, hằng ký tự và chuỗi ký tự là những thứ khác nhau.
+
+* Một ký tự được bao quanh bởi dấu ngoặc đơn giống như 'a'một hằng số ký tự. Hằng ký tự là một số nguyên có giá trị là mã ký tự đại diện cho ký tự đó. Cách diễn giải các hằng ký tự có nhiều ký tự giống như 'abc'được xác định khi triển khai.
+* Không hoặc nhiều ký tự được bao quanh bởi dấu ngoặc kép giống như "abc"một chuỗi ký tự. Chuỗi ký tự là một mảng không thể sửa đổi có các phần tử thuộc kiểu char. Chuỗi trong dấu ngoặc kép cộng với dấu chấm dứt null-characterlà nội dung, do đó "abc"có 4 phần tử ( {'a', 'b', 'c', '\0'})
+
+#### Ví dụ 1, một hằng số ký tự được sử dụng trong đó nên sử dụng một chuỗi ký tự. Hằng ký tự này sẽ được chuyển đổi thành một con trỏ theo cách được xác định khi triển khai và có rất ít cơ hội để con trỏ được chuyển đổi hợp lệ, vì vậy ví dụ này sẽ gọi hành vi không xác định.
+```c
+#include <stdio.h>
+int main(void) {
+    const char *hello = 'hello, world'; /* bad */
+    puts(hello);
+    return 0;
+}
+```
+#### Ví dụ 2 , một chuỗi ký tự được sử dụng trong đó nên sử dụng hằng ký tự. Con trỏ được chuyển đổi từ chuỗi ký tự sẽ được chuyển đổi thành số nguyên theo cách do quá trình triển khai xác định và nó sẽ được chuyển đổi thành char theo cách do quá trình triển khai xác định. (Cách chuyển đổi một số nguyên thành loại có dấu không thể biểu thị giá trị cần chuyển đổi do việc triển khai xác định và liệu char có được ký hay không cũng do việc triển khai xác định.) Đầu ra sẽ là một thứ vô nghĩa.
+```c
+#include <stdio.h>
+int main(void) {
+    char c = "a"; /* bad */
+    printf("%c\n", c);
+    return 0;
+}
+```
+* Trong hầu hết các trường hợp, trình biên dịch sẽ phàn nàn về những sự trộn lẫn này. Nếu không, bạn cần sử dụng nhiều tùy chọn cảnh báo trình biên dịch hơn hoặc bạn nên sử dụng trình biên dịch tốt hơn.
+
+### 5. Theo mặc định, các ký tự dấu phẩy động có kiểu double
+* Phải cẩn thận khi khởi tạo các biến thuộc loại floathoặc literal valuesso sánh chúng với các giá trị bằng chữ, bởi vì các ký tự dấu phẩy động thông thường như 0.1là loại double. Điều này có thể dẫn tới những bất ngờ:
+```c
+#include <stdio.h>
+int main() {
+    float  n = 0.1;
+    if (n > 0.1) printf("Wierd\n");
+    return 0;
+}
+```
+// Prints "Wierd" when n is float
+* Ở đây, n được khởi tạo và làm tròn đến độ chính xác đơn, dẫn đến giá trị 0,10000000149011612. Sau đó, n được chuyển đổi trở lại thành độ chính xác gấp đôi để so sánh với 0,1 chữ (bằng 0,100000000000000001), dẫn đến không khớp.
+
+* Bên cạnh các lỗi làm tròn, việc trộn các biến float với các ký tự kép sẽ dẫn đến hiệu suất kém trên các nền tảng không hỗ trợ phần cứng cho độ chính xác kép.
+
+### 6. Quên giải phóng bộ nhớ
+* Người ta phải luôn nhớ giải phóng bộ nhớ đã được phân bổ, theo hàm của chính bạn hoặc theo hàm thư viện được gọi từ hàm của bạn.
+```c
+#include <stdlib.h>
+#include <stdio.h>
+int main(void)
+{
+    char *line = NULL;
+    size_t size = 0;
+    /* memory implicitly allocated in getline */
+    getline(&line, &size, stdin);
+    /* uncomment the line below to correct the code */
+    /* free(line); */
+    return 0;
+}
+```
+* Đây là một lỗi khá vô hại trong ví dụ cụ thể này, vì khi một tiến trình thoát ra, hầu như tất cả các hệ điều hành đều giải phóng toàn bộ bộ nhớ được phân bổ cho bạn.
+*  Cũng lưu ý rằng getline có thể bị lỗi theo nhiều cách khác nhau, nhưng dù lỗi theo cách nào đi nữa, bộ nhớ mà nó đã phân bổ phải luôn được giải phóng (khi bạn sử dụng xong) nếu dòng không phải là NULL.
+*   Bộ nhớ có thể được phân bổ ngay cả khi lệnh gọi getline() đầu tiên phát hiện EOF (được báo cáo bằng giá trị trả về là -1, không phải EOF).
+
+### 7. Thêm dấu chấm phẩy vào #define
+* Chủ yếu xảy ra với tôi!! Rất dễ bị nhầm lẫn trong bộ tiền xử lý C và coi nó như một phần của chính C. Nhưng đó là một sai lầm, vì bộ tiền xử lý chỉ là một cơ chế thay thế văn bản. Ví dụ, nếu bạn viết
+```c
+// WRONG
+#define MAX 100;
+int arr[MAX];
+Mã sẽ được chuyển đổi thành
+int arr[100;];
+```
+* Đó là một lỗi cú pháp. Cách khắc phục là bỏ dấu chấm phẩy khỏi dòng #define.
+
+### 8. Cẩn thận với dấu chấm phẩy
+* Hãy cẩn thận với dấu chấm phẩy. Ví dụ sau
+```c
+if (x > a);
+   a = x;
+thực sự có nghĩa là:
+if (x > a) {}
+a = x;
+```
+* Có nghĩa là x sẽ được gán cho a trong mọi trường hợp, đây có thể không phải là điều bạn mong muốn ban đầu.
+* Đôi khi, thiếu dấu chấm phẩy cũng sẽ gây ra vấn đề không thể nhận thấy:
+```c
+if (i < 0) 
+    return
+day = date[0];
+hour = date[1];
+minute = date[2];
+```
+* Dấu chấm phẩy phía sau trả về bị bỏ qua, do đó day = date[0] sẽ được trả về.
+
+### 9. Viết nhầm = thay vì == khi so sánh
+* Toán = tử được sử dụng để gán.
+* Toán == tử được sử dụng để so sánh.
+* Người ta phải cẩn thận không trộn lẫn cả hai. Đôi khi viết nhầm
+/* assign y to x */
+```c
+if (x = y) {
+     /* logic */
+}
+```
+khi điều thực sự mong muốn là:
+/* compare if x is equal to y */
+```c
+if (x == y) {
+    /* logic */
+}
+```
+ * Cái trước gán giá trị của y cho x và kiểm tra xem giá trị đó có khác 0 hay không, thay vì thực hiện so sánh, tương đương với:
+```c
+if ((x = y) != 0) {
+    /* logic */
+}
+```
+Truyện tranh này cho thấy điều tương tự. Trong đó, người lập trình sử dụng = thay vì == trong if câu lệnh.
+### 10. Sao chép quá nhiều
+```c
+char buf[8]; /* tiny buffer, easy to overflow */
+printf("What is your name?\n");
+scanf("%s", buf); /* WRONG */
+scanf("%7s", buf); /* RIGHT */
+```
+* Nếu người dùng nhập một chuỗi dài hơn 7 ký tự (-1 cho dấu kết thúc null), bộ nhớ phía sau bộ đệm đệm sẽ bị ghi đè. 
+* Điều này dẫn đến hành vi không xác định. Các hacker độc hại thường khai thác điều này để ghi đè địa chỉ trả về và đổi thành địa chỉ mã độc của hacker.
+
+### 11. Macro là sự thay thế chuỗi đơn giản
+* Macro là sự thay thế chuỗi đơn giản. Vì vậy, chúng sẽ hoạt động với các mã thông báo tiền xử lý.
+```c
+#include <stdio.h>
+#define SQUARE(x) x*x
+int main(void) {
+    printf("%d\n", SQUARE(1+2));
+    return 0;
+}
+```
+* Bạn có thể mong đợi mã này sẽ được in 9, (3*3) nhưng thực tế 5 nó sẽ được in vì macro sẽ được mở rộng thành 1+2*1+2.
+* Bạn nên đặt các đối số đã lấy và toàn bộ biểu thức trong macro trong dấu ngoặc đơn để tránh vấn đề này.
+```c
+#include <stdio.h>
+#define SQUARE(x) ((x)*(x))
+int main(void) {
+    printf("%d\n", SQUARE(1+2));
+    return 0;
+}
+```
 ## Unit Testing
 
 ## Git Version Control
